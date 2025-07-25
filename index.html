@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Site</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+        
+        .loading {
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <div class="loading" id="loading">동영상을 불러오는 중...</div>
+        <video id="mainVideo" controls autoplay>
+            <source src="https://files.catbox.moe/0pm6tj.mp4" type="video/mp4">
+            브라우저가 동영상을 지원하지 않습니다.
+        </video>
+    </div>
+
+    <script>
+        const video = document.getElementById('mainVideo');
+        const loading = document.getElementById('loading');
+        
+        // 첫 번째 동영상 URL
+        const firstVideo = 'https://files.catbox.moe/0pm6tj.mp4';
+        // 두 번째 동영상 URL
+        const secondVideo = 'https://files.catbox.moe/oojjx5.mp4';
+        
+        // 현재 재생 중인 동영상 추적
+        let currentVideo = 1;
+        
+        // 동영상 로딩 시작할 때
+        video.addEventListener('loadstart', function() {
+            loading.style.display = 'block';
+        });
+        
+        // 동영상 로딩 완료시
+        video.addEventListener('canplay', function() {
+            loading.style.display = 'none';
+        });
+        
+        // 첫 번째 동영상이 끝나면 두 번째 동영상으로 전환
+        video.addEventListener('ended', function() {
+            if (currentVideo === 1) {
+                // 두 번째 동영상으로 변경
+                video.src = secondVideo;
+                video.load();
+                video.play();
+                currentVideo = 2;
+            }
+            // 두 번째 동영상이 끝나면 더 이상 재생하지 않음
+        });
+        
+        // 에러 처리
+        video.addEventListener('error', function() {
+            loading.style.display = 'none';
+            console.error('동영상 로딩 중 오류가 발생했습니다.');
+        });
+    </script>
+</body>
+</html>
